@@ -68,7 +68,7 @@ See [local setup with DB on docker section](#local-set-up-with-mysql-on-docker)
 Run the entire stack in Docker.
 See the [dockerized branch README](https://github.com/bgtti/polln/tree/main_dockerized) for more details
 
-I have a video guide for the installation process in youtube, you can access [here](https://youtu.be/TvnNeX7b05s).
+I have a video guide for the installation process in youtube, you can access [here](https://youtu.be/KpWMVhLvS78).
 It covers the three different ways listed above.
 
 
