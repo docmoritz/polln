@@ -29,6 +29,9 @@ services:
       REGISTRATION_OPEN: ${REGISTRATION_OPEN:-false}
     depends_on:
       - db
+    labels:
+      # msc-security-headers@file: zentrale AR-Middleware (HSTS, nosniff, XFO, Referrer-Policy)
+      - traefik.http.routers.https-0-yjr84bm6cz4z7ar72z3adsu4-web.middlewares=gzip,msc-security-headers@file
 
 volumes:
   polln-db:
