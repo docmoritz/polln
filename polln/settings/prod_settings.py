@@ -6,7 +6,7 @@ from .base_settings import *
 import mysql.connector
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True # change
+DEBUG = False
 
 # Define base url (points to localhost in development)
 BASE_URL = os.getenv("BASE_URL")
@@ -23,3 +23,6 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 #This will redirect any accidental HTTP request to HTTPS — good for SEO, security, and consistency in links:
 SECURE_SSL_REDIRECT = True
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True

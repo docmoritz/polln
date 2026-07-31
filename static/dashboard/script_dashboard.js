@@ -364,6 +364,9 @@ function getOrderOfQuestions(projectId) {
     })
     fetch(`/dashboard/question_order`, {
         method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        },
         body: JSON.stringify({
             body: questionsAndPositions,
         })

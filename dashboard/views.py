@@ -4,7 +4,6 @@ Dashboard: views pertaining to user (who sets up the polls)
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers import serialize
 # from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -34,6 +33,7 @@ def index(request, message=None):
 
 
 # add new project
+@login_required
 def add_project(request):
     """
     Adds a project (method = POST)
@@ -87,12 +87,13 @@ def add_project(request):
             return HttpResponseRedirect(reverse("dashboard:index"))
 
 # view project page
+@login_required
 def project(request, id):
     """
     Shows projects in project template (method = GET)
     """
     try:
-        the_project = Project.objects.get(pk=id)
+        the_project = Project.objects.get(pk=id, user=request.user)
         if the_project.num_questions > 0:
             the_questions = Question.objects.filter(
                 project=the_project).order_by("position")
@@ -112,7 +113,7 @@ def project(request, id):
         return HttpResponseRedirect(reverse("dashboard:index"))        
 
 # Open poll on project
-@csrf_exempt
+@login_required
 def open_poll(request,id):
     """
     Opens poll (method = GET)
@@ -121,7 +122,7 @@ def open_poll(request,id):
     Requires project id
     """
     try:
-        project = Project.objects.get(pk=id)
+        project = Project.objects.get(pk=id, user=request.user)
         project.is_live = True
         project.save()
         response_data = {'status': 'success', 'message': 'Project is live.'}
@@ -131,7 +132,7 @@ def open_poll(request,id):
         return JsonResponse(response_data, status=400)
     
 # Close poll on project
-@csrf_exempt
+@login_required
 def close_poll(request, id):
     """
     Closes poll (method = GET)
@@ -140,7 +141,7 @@ def close_poll(request, id):
     Requires project id
     """
     try:
-        project = Project.objects.get(pk=id)
+        project = Project.objects.get(pk=id, user=request.user)
         if project.is_live == True:
             project.is_live = False
             # Check if there are results for the current poll_nr (batch):
@@ -208,7 +209,7 @@ def close_poll(request, id):
         return JsonResponse(response_data, status=400)
 
 # Function that send project data to JS editProjectData function for modal_add_project to edit project, and gets back editted data.
-@csrf_exempt
+@login_required
 def edit_project(request, id):
     """
     Edit project (methods = GET and POST)
@@ -232,7 +233,7 @@ def edit_project(request, id):
     }
     """
     if request.method == "GET":
-        project = Project.objects.get(pk=id)
+        project = Project.objects.get(pk=id, user=request.user)
         serialized_question = serialize('json', [project])
         return JsonResponse({'project': serialized_question})
     else:
@@ -247,7 +248,7 @@ def edit_project(request, id):
                 set_pw = True
                 pw = request.POST.get('projectpw', "")
                 if not pw or pw == "":
-                    the_project = Project.objects.get(pk=id)
+                    the_project = Project.objects.get(pk=id, user=request.user)
                     request.session['project_message'] = "No password set, project could not be saved."
                     return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
             else:
@@ -258,7 +259,7 @@ def edit_project(request, id):
             else:
                 show_answers = False
             try:
-                the_project = Project.objects.get(pk=id)
+                the_project = Project.objects.get(pk=id, user=request.user)
                 the_project.name = pjt_name
                 the_project.username_requirement = set_username
                 the_project.pw_requirement = set_pw
@@ -272,6 +273,7 @@ def edit_project(request, id):
                 return HttpResponseRedirect(reverse("dashboard:index"))
 
 # deleting a project
+@login_required
 def delete_project(request, id):
     """
     Deletes project (method = GET)
@@ -280,7 +282,7 @@ def delete_project(request, id):
     Requires project id
     """
     try:
-        the_project = Project.objects.get(pk=id)
+        the_project = Project.objects.get(pk=id, user=request.user)
         the_project.delete()
         request.session['index_message'] = "Project deleted successfully!"
         return HttpResponseRedirect(reverse("dashboard:index"))
@@ -289,7 +291,7 @@ def delete_project(request, id):
         return HttpResponseRedirect(reverse("dashboard:index"))
 
 # adding new question
-@csrf_exempt
+@login_required
 def add_question(request):
     """
     Adds question (method = POST)
@@ -299,7 +301,7 @@ def add_question(request):
     """
     if request.method == "POST":
         the_user = User.objects.get(pk=request.user.pk)
-        the_project = Project.objects.get(pk=int(request.POST['project_pk']))
+        the_project = Project.objects.get(pk=int(request.POST['project_pk']), user=request.user)
         the_question = request.POST['thequestion']
         if 'question' in request.POST:
             the_question_type = "Open-ended Question"
@@ -348,7 +350,7 @@ def add_question(request):
             return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
 
 # Question ordering
-@csrf_exempt
+@login_required
 def question_order(request):
     """
     Defines question order (method = POST)
@@ -367,7 +369,7 @@ def question_order(request):
             if len(question_data) == 2:
                 question_pk, position = question_data
                 try:
-                    question = Question.objects.get(pk=question_pk)
+                    question = Question.objects.get(pk=question_pk, user=request.user)
                     question.position = position + 1
                     question.save()
                 except Question.DoesNotExist:
@@ -385,7 +387,7 @@ def question_order(request):
     return JsonResponse(response_data)
 
 # Function that sends Question object information to JS the function editQuestionData, and received editted project info. 
-@csrf_exempt
+@login_required
 def edit_question(request, id):
     """
     Edit question (methods = POST or GET)
@@ -420,7 +422,7 @@ def edit_question(request, id):
     ]
     """
     if request.method == "GET":
-        question = Question.objects.get(pk=id)
+        question = Question.objects.get(pk=id, user=request.user)
         serialized_question = serialize('json', [question])
         return JsonResponse({'question': serialized_question})
 
@@ -457,7 +459,7 @@ def edit_question(request, id):
         the_5_option = request.POST['choice5']
 
         try:
-            edit_q = Question.objects.get(pk=id)
+            edit_q = Question.objects.get(pk=id, user=request.user)
             edit_q.question = the_question
             edit_q.question_type = the_question_type
             edit_q.answer = the_answer
@@ -478,7 +480,7 @@ def edit_question(request, id):
             request.session['project_message'] = "There was a problem editing your question. Please try again"
             return HttpResponseRedirect(reverse("dashboard:project", kwargs={'id': the_project.pk}))
 
-@csrf_exempt
+@login_required
 def delete_question(request, id):
     """
     Deletes question (method = GET)
@@ -487,7 +489,7 @@ def delete_question(request, id):
     Requires question id
     """
     try:
-        delete_q = Question.objects.get(pk=id)
+        delete_q = Question.objects.get(pk=id, user=request.user)
         # Update positions of all elements after the element being deleted
         all_q_positioned_after = Question.objects.filter(
             project=delete_q.project, position__gt=delete_q.position)
@@ -508,6 +510,7 @@ def delete_question(request, id):
 
 
 # Project Answers
+@login_required
 def project_answers(request, id):
     """
     Gets project answers (method = GET)
@@ -515,7 +518,11 @@ def project_answers(request, id):
     ---
     Requires project's id
     """
-    the_project = Project.objects.get(pk=id)
+    try:
+        the_project = Project.objects.get(pk=id, user=request.user)
+    except Project.DoesNotExist:
+        request.session['index_message'] = "Project not found."
+        return HttpResponseRedirect(reverse("dashboard:index"))
     latest_result = Result.objects.filter(project=the_project).order_by('-poll_batch').first()
     latest_respondents = Respondent.objects.filter(
         linked_answer__poll_batch=latest_result.poll_batch, linked_answer__project=the_project).distinct()
@@ -535,6 +542,7 @@ def project_answers(request, id):
     })
 
 # @csrf_exempt 
+@login_required
 def set_session_message(request):
     """
     Sets a session message (error/success) (method = POST)

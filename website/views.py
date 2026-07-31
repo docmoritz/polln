@@ -12,6 +12,9 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import User
+import os
+
+REGISTRATION_OPEN = os.getenv('REGISTRATION_OPEN', 'false').lower() == 'true'
 
 def index(request, message=None):
     """
@@ -62,6 +65,10 @@ def signup(request):
     """
     Renders signup page and sirgns up user (methods = GET and POST)
     """
+    if not REGISTRATION_OPEN:
+        return render(request, "website/login.html", {
+            "message": "Registration is closed. Please contact the administrator."
+        })
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
