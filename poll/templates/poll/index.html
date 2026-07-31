@@ -12,20 +12,20 @@
             {% if project.username_requirement %}
             <div class="form-group POLL-form-part">
                 <label for="username"></label>
-                <input autofocus class="form-control" type="text" name="username" placeholder="Username"
+                <input autofocus class="form-control" type="text" name="username" placeholder="Dein Name"
                     id="POLL-username" required>
             </div>
             {% endif %}
             {% if project.pw_requirement %}
             <div class="form-group POLL-form-part">
                 <label for="projectpassword"></label>
-                <input type="password" class="form-control" id="projectpassword" placeholder="Password"
+                <input type="password" class="form-control" id="projectpassword" placeholder="Passwort"
                     name="projectpassword" required>
-                <p class="POLL-wrong-pw BASE-hide" id="POLL-wrong-pw"><i>Oops, wrong password. Try again.</i></p>
+                <p class="POLL-wrong-pw BASE-hide" id="POLL-wrong-pw"><i>Falsches Passwort. Bitte nochmal versuchen.</i></p>
             </div>
             {% endif %}
             <div class="POLL-page-part POLL-form-part POLL-lets-begin">
-                <p>Let's begin!</p>
+                <p>Los geht’s!</p>
                 {% if project.pw_requirement %}
                 <input class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1" type="submit" value="Start"
                     onclick="poll_password_check('{{project.pk}}')">
@@ -38,7 +38,7 @@
         {% else %}
         <br>
         <div class="POLL-page-part">
-            <p>Let's begin!</p>
+            <p>Los geht’s!</p>
             <br>
             <a href="" role="button" class="btn btn-light my-2 my-sm-0 BASE-btn BASE-btn-type1"
                 onclick="changePage('next')">Start</a>
@@ -47,8 +47,8 @@
         {% else %}
         <br>
         <div class="POLL-page-part">
-            <p>Oh no! The poll is closed!</p>
-            <p>Ask the owner to open the poll and come back later!</p>
+            <p>Die Umfrage ist gerade geschlossen.</p>
+            <p>Bitte kurz warten, bis sie geöffnet wird — dann Seite neu laden.</p>
         </div>
         {% endif %}
     </div>
@@ -61,14 +61,14 @@
             <div class="form-group">
                 <label for="OE_{{question.pk}}"></label>
                 <br>
-                <input autofocus class="form-control" type="text" name="OE_{{question.pk}}" placeholder="Your answer"
+                <input autofocus class="form-control" type="text" name="OE_{{question.pk}}" placeholder="Deine Antwort"
                     data-answer="OE" data-question="{{question.pk}}">
             </div>
             {% elif question.question_type == "Question and Answer" %}
             <div class="form-group">
                 <label for="QA_{{question.pk}}"></label>
                 <br>
-                <input autofocus class="form-control" type="text" name="QA_{{question.pk}}" placeholder="Your answer"
+                <input autofocus class="form-control" type="text" name="QA_{{question.pk}}" placeholder="Deine Antwort"
                     data-answer="QA" data-question="{{question.pk}}">
             </div>
             {% elif question.question_type == "Multiple Choice" %}
@@ -116,19 +116,19 @@
                 {% endif %}
             </div>
             {% else %}
-            <p>Opps, there was a problem.</p>
+            <p>Hoppla, da ist etwas schiefgelaufen.</p>
             {% endif %}
         </div>
         <br>
         <div class="POLL-page-part-flex">
             <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type4"
-                onclick="changePage('previous')">Previous</a>
+                onclick="changePage('previous')">Zurück</a>
             {% if question.position == num_questions %}
             <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2" data-wasclicked="false"
-                onclick="checkIfPollIsOpen('{{ project.pk }}', event)">Submit</a>
+                onclick="checkIfPollIsOpen('{{ project.pk }}', event)">Absenden</a>
             {% else %}
             <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2"
-                onclick="changePage('next')">Next</a>
+                onclick="changePage('next')">Weiter</a>
             {% endif %}
         </div>
 
@@ -136,20 +136,20 @@
     {% endfor %}
     <!-- Last page -->
     <div class="BASE-hide POLL-page POLL-last-page" data-pagenr="{{ num_questions|add:2 }}">
-        <h2>Thank you for participating!</h2>
-        <p id="POLL-submission-status">Your answers have been submitted!</p>
+        <h2>Danke für deine Teilnahme!</h2>
+        <p id="POLL-submission-status">Deine Antworten wurden übermittelt!</p>
         {% if project.show_answers %}
         <a href="" role="button" class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 POLL-ans-btn"
-            onclick="changePage('next')">Check out the answers!</a>
+            onclick="changePage('next')">Antworten ansehen!</a>
         {% else %}
         <a href="{% url 'website:index' %}" role="button"
-            class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 POLL-ans-btn">To homepage</a>
+            class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 POLL-ans-btn">Zur Startseite</a>
         {% endif %}
     </div>
     <!-- Results page -->
     {% if project.show_answers %}
     <div class="BASE-hide POLL-page POLL-last-page" data-pagenr="{{ num_questions|add:3 }}">
-        <h2>Correct Answers</h2>
+        <h2>Richtige Antworten</h2>
         <div>
             {% for question in questions %}
             {% if question.question_type == "Question and Answer" %}
@@ -177,8 +177,7 @@
             {% endfor %}
         </div>
         <a href="{% url 'website:index' %}" role="button"
-            class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 POLL-ans-btn">To
-            homepage</a>
+            class="btn btn-dark my-2 my-sm-0 BASE-btn BASE-btn-type2 POLL-ans-btn">Zur Startseite</a>
     </div>
     {% endif %}
 </div>

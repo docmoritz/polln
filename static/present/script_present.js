@@ -161,7 +161,7 @@ function getPollResults(projectId) {
                     if (moreThan10Answers > 0) {
                         let displayMoreThan10 = document.createElement('p');
                         displayMoreThan10.classList.add('PRESENT-displayMoreThan10')
-                        displayMoreThan10.textContent = `+ ${moreThan10Answers} answers`;
+                        displayMoreThan10.textContent = `+ ${moreThan10Answers} weitere Antworten`;
                     }
                 } else if (question[1] === "Question and Answer") {
                     let answerPresentation = document.getElementById(`PRESENT-QA-${question[0]}`)
@@ -182,10 +182,10 @@ function getPollResults(projectId) {
                         percentCorrect = percentCorrect.toFixed(1);
                     }
                     let theResultLine1 = document.createElement('p');
-                    theResultLine1.textContent = `${percentCorrect}% of the respondents got it right!`;
+                    theResultLine1.textContent = `${percentCorrect}% haben richtig geantwortet!`;
                     theResultLine1.classList.add('PRESENT-QA-correct-ans')
                     let theResultLine2 = document.createElement('p');
-                    theResultLine2.textContent = `That is ${nrCorrectAns} respondents out of ${theAnswers.length}!`;
+                    theResultLine2.textContent = `Das sind ${nrCorrectAns} von ${theAnswers.length} Teilnehmenden!`;
                     theResultLine2.classList.add('PRESENT-QA-sub')
                     answerPresentation.append(theResultLine1, theResultLine2);
                 } else if (question[1] === "Multiple Choice") {
@@ -271,10 +271,10 @@ function getPollResults(projectId) {
                         }
 
                         let theResultsLine1 = document.createElement('p');
-                        theResultsLine1.textContent = `Correct answer: ${optionsQ[theCorrectOption - 1]}`;
+                        theResultsLine1.textContent = `Richtige Antwort: ${optionsQ[theCorrectOption - 1]}`;
                         theResultsLine1.classList.add('PRESENT-MC-correct-ans')
                         let theResultsLine2 = document.createElement('p');
-                        theResultsLine2.textContent = `${percentThatGotRight}% of the respondents got it right!`;
+                        theResultsLine2.textContent = `${percentThatGotRight}% haben richtig geantwortet!`;
                         theResultsLine2.classList.add('PRESENT-MC-sub');
                         elementToDisplayResults.append(theResultsLine1, theResultsLine2);
                     } else {
@@ -288,7 +288,7 @@ function getPollResults(projectId) {
                         }
                         if (countMostVotedOption > 1) {
                             let theResultsLine1 = document.createElement('p');
-                            theResultsLine1.textContent = `There was a tie!`;
+                            theResultsLine1.textContent = `Gleichstand!`;
                             theResultsLine1.classList.add('PRESENT-MC-sub');
                             elementToDisplayResults.append(theResultsLine1);
                         } else {
@@ -299,7 +299,7 @@ function getPollResults(projectId) {
                                 percentOfVotesInWinningOption = percentOfVotesInWinningOption.toFixed(1);
                             }
                             let theResultsLine1 = document.createElement('p');
-                            theResultsLine1.textContent = `${percentOfVotesInWinningOption}% voted ${winningOption}`;
+                            theResultsLine1.textContent = `${percentOfVotesInWinningOption}% stimmten für „${winningOption}“`;
                             theResultsLine1.classList.add('PRESENT-MC-correct-ans');
                             elementToDisplayResults.append(theResultsLine1);
                         }

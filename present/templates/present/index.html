@@ -6,7 +6,7 @@
     <div id="PRESENT-page-1" class="PRESENT-page " data-pagenr="1">
         <div id="PRESENT-page-1-btn">
             <small><a href="" role="button" class="BASE-btn BASE-btn-small-gray" onclick="openFullscreen(event)">
-                    Full screen</a></small>
+                    Vollbild</a></small>
         </div>
         <br>
         <div class="PRESENT-page-1-content PRESENT-flex">
@@ -27,8 +27,8 @@
     </div>
     <!-- Page 2 -->
     <div id="PRESENT-page-2" class="PRESENT-page PRESENT-flex BASE-hide" data-pagenr="2">
-        <h2>Poll closed</h2>
-        <p class="PRESENT-sub">Let's check the results!</p>
+        <h2>Umfrage geschlossen</h2>
+        <p class="PRESENT-sub">Schauen wir uns die Ergebnisse an!</p>
     </div>
     <!-- Page 3 and so forth -->
 
@@ -42,7 +42,7 @@
         </div>
         {% elif question.question_type == "Question and Answer" %}
         <div class="PRESENT-flex PRESENT-q-answer">
-            <p class="PRESENT-QA-sub">The correct answer is...</p>
+            <p class="PRESENT-QA-sub">Die richtige Antwort ist …</p>
             <p class="PRESENT-correct-QA"><b>{{ question.answer }}</b></p>
             <div class="PRESENT-flex PRESENT-q-answer" id="PRESENT-QA-{{ question.id }}">
                 <!-- populated by script_present -->
@@ -59,7 +59,7 @@
             </div>
         </div>
         {% else %}
-        <p>Oops, we had an issue fetching the results</p>
+        <p>Hoppla, die Ergebnisse konnten nicht geladen werden.</p>
         {% endif %}
     </div>
     {% endfor %}
@@ -67,7 +67,7 @@
     <!-- Last page -->
     <div id="PRESENT-page-{{ num_questions|add:3 }}" class="PRESENT-page PRESENT-flex BASE-hide"
         data-pagenr="{{ num_questions|add:3 }}">
-        <h2>Thank you!</h2>
+        <h2>Vielen Dank!</h2>
     </div>
 
     <!-- Blank page after last -->

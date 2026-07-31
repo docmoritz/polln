@@ -49,7 +49,7 @@ function checkIfPollIsOpen(projectId, event) {
                 submitPollAnswers(projectId) //submit answers if poll is open
             } else {
                 let submissionStatus = document.getElementById('POLL-submission-status')
-                submissionStatus.textContent = "Unfortunately the poll is closed and your answers could not be submitted."
+                submissionStatus.textContent = "Die Umfrage ist leider geschlossen — deine Antworten konnten nicht übermittelt werden."
                 changePage('next')
             }
         })

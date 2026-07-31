@@ -85,7 +85,7 @@
             <td>{{ respondent.username }}</td>
             <td>{{ respondent.creation_date }}</td>
             {% for answer in respondent.linked_answer.all %}
-            <td>{{ answer.users_answer }}</td>
+            <td>{{ answer.display_answer }}</td>
             {% endfor %}
         </tr>
         {% endfor %}

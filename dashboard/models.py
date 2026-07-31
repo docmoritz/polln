@@ -74,6 +74,16 @@ class Answer(models.Model):
         self.poll_batch = self.project.poll_nr
         super().save(*args, **kwargs)
     
+    @property
+    def display_answer(self):
+        """Bei Multiple Choice den Optionstext statt des Rohschluessels (option1..option5) liefern."""
+        if (self.question and self.question.question_type == "Multiple Choice"
+                and self.users_answer in ("option1", "option2", "option3", "option4", "option5")):
+            text = getattr(self.question, self.users_answer, None)
+            if text:
+                return text
+        return self.users_answer
+
     def __str__(self):
         return f"Answer {self.pk}: from {self.user.pk} in pj {self.project.pk} batch {self.poll_batch}"
 
