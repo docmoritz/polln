@@ -3,7 +3,6 @@ Settings specific to production environment.
 Inherits from base settings.
 """
 from .base_settings import *
-import mysql.connector
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True # change
